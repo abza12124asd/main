@@ -5409,10 +5409,11 @@ function MacLib:Window(Settings)
 		},
 		["Keybind"] = {
 			Save = function(Flag, data)
+				print(data.BindedKB)
 				return {
 					type = "Keybind", 
 					flag = Flag, 
-					bind = (typeof(data.BindedKB) == "EnumItem" and data.BindedKB.Name) or nil
+					bind = data.BindedKB
 				}
 			end,
 			Load = function(Flag, data)
