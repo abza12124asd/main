@@ -4636,12 +4636,12 @@ function MacLib:Window(Settings)
 				local inputPath = nil
 				local selectedConfig = nil
 
-				configSection:Input({
+				local configinput; configinput = configSection:Input({
 					Name = "Config Name",
 					Placeholder = "Name",
 					AcceptedCharacters = "All",
-					Callback = function(input)
-						inputPath = input
+					Callback = function(name)
+						inputPath = name
 					end,
 				})
 
@@ -4734,9 +4734,16 @@ function MacLib:Window(Settings)
 							return
 						end
 
+						local Options = MacLib:RefreshConfigList()
+
 						configSelection:ClearOptions()
-						configSelection:InsertOptions(MacLib:RefreshConfigList())
-						
+
+						if Options then
+							configSelection:InsertOptions(Options)
+						else
+							configSelection:InsertOptions({"Empty"})
+						end
+
 						WindowFunctions:Notify({
 							Title = "Interface",
 							Description = string.format("Deleted config %q", configSelection.Value),
@@ -4747,8 +4754,13 @@ function MacLib:Window(Settings)
 				configSection:Button({
 					Name = "Refresh Config List",
 					Callback = function()
-						configSelection:ClearOptions()
-						configSelection:InsertOptions(MacLib:RefreshConfigList())
+						local Options = MacLib:RefreshConfigList()
+
+						if Options then
+							configSelection:InsertOptions(Options)
+						else
+							configSelection:InsertOptions({"Empty"})
+						end
 					end,
 				})
 				
@@ -4758,6 +4770,8 @@ function MacLib:Window(Settings)
 					Name = "Set as autoload",
 					Callback = function()
 						local name = configSelection.Value
+						if name == "Empty" then return end
+
 						writefile(MacLib.Folder .. "/settings/autoload.txt", name)
 						autoloadLabel:SetDesc("Autoload config: " .. name)
 						WindowFunctions:Notify({
