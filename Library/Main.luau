@@ -5415,6 +5415,10 @@ function MacLib:Window(Settings)
 				}
 			end,
 			Load = function(Flag, data)
+
+				print(Flag)
+				print(Data)
+
 				if MacLib.Options[Flag] and data.bind then
 					MacLib.Options[Flag]:Bind(Enum.KeyCode[data.bind])
 				end
