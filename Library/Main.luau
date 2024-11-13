@@ -5533,6 +5533,12 @@ function MacLib:Window(Settings)
 			if not ClassParser[option.Class] then continue end
 			if option.IgnoreConfig then continue end
 
+			if option.Class == "Keybind" then
+				table.foreach(option, function(k,v)
+					print(k, v)
+				end)
+			end
+
 			table.insert(data.objects, ClassParser[option.Class].Save(flag, option))
 		end	
 
