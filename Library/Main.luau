@@ -4738,7 +4738,7 @@ function MacLib:Window(Settings)
 
 						configSelection:ClearOptions()
 
-						if #Options > 0 then
+						if type(Options) == "table" and Options ~= {} then
 							configSelection:InsertOptions(Options)
 						else
 							configSelection:InsertOptions({"Empty"})
@@ -4757,11 +4757,7 @@ function MacLib:Window(Settings)
 						local Options = MacLib:RefreshConfigList()
 						configSelection:ClearOptions()
 
-						if Options and type(Options) == "table" then
-							configSelection:InsertOptions(Options)
-						else
-							configSelection:InsertOptions({"Empty"})
-						end
+						configSelection:InsertOptions(Options)
 					end,
 				})
 				
