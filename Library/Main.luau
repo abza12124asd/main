@@ -2407,6 +2407,7 @@ function MacLib:Window(Settings)
 
 					function KeybindFunctions:Bind(Key)
 						binded = Key
+						KeybindFunctions.Binded = Key
 						binderBox.Text = Key.Name
 
 						if KeybindFunctions.Settings.onBinded then
@@ -5411,15 +5412,15 @@ function MacLib:Window(Settings)
 				return {
 					type = "Keybind", 
 					flag = Flag, 
-					bind = (typeof(data.bind) == "EnumItem" and data.bind.Name) or nil
+					bind = (typeof(data.Binded) == "EnumItem" and data.Binded.Name) or nil
 				}
 			end,
 			Load = function(Flag, data)
 
 				print(Flag)
-				print(Data)
+				print(data)
 
-				if MacLib.Options[Flag] and data.bind then
+				if MacLib.Options[Flag] and data.Binded then
 					MacLib.Options[Flag]:Bind(Enum.KeyCode[data.bind])
 				end
 			end
