@@ -2408,6 +2408,10 @@ function MacLib:Window(Settings)
 					function KeybindFunctions:Bind(Key)
 						binded = Key
 						binderBox.Text = Key.Name
+
+						if KeybindFunctions.Settings.onBinded then
+							KeybindFunctions.Settings.onBinded(binded)
+						end
 					end
 
 					function KeybindFunctions:Unbind()
@@ -5407,7 +5411,7 @@ function MacLib:Window(Settings)
 				return {
 					type = "Keybind", 
 					flag = Flag, 
-					bind = (typeof(data.Bind) == "EnumItem" and data.Bind.Name) or nil
+					bind = (typeof(data.bind) == "EnumItem" and data.bind.Name) or nil
 				}
 			end,
 			Load = function(Flag, data)
