@@ -5419,10 +5419,10 @@ function MacLib:Window(Settings)
 
 				print(Flag)
 				print(data)
-				print(data.BindedKB)
+				print(data.bind)
 
-				if MacLib.Options[Flag] and data.BindedKB then
-					MacLib.Options[Flag]:Bind(Enum.KeyCode[data.BindedKB])
+				if MacLib.Options[Flag] and data.bind then
+					MacLib.Options[Flag]:Bind(Enum.KeyCode[data.bind])
 				end
 			end
 		},
