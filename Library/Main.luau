@@ -4739,10 +4739,9 @@ function MacLib:Window(Settings)
 						configSelection:ClearOptions()
 
 						if #Options > 0 then
-
 							configSelection:InsertOptions(Options)
 						else
-
+							configSelection:InsertOptions({"Empty"})
 						end
 
 						WindowFunctions:Notify({
@@ -4756,6 +4755,7 @@ function MacLib:Window(Settings)
 					Name = "Refresh Config List",
 					Callback = function()
 						local Options = MacLib:RefreshConfigList()
+						configSelection:ClearOptions()
 
 						if Options and type(Options) == "table" then
 							configSelection:InsertOptions(Options)
