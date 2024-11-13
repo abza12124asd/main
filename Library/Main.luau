@@ -4740,8 +4740,6 @@ function MacLib:Window(Settings)
 
 						if type(Options) == "table" and Options ~= {} then
 							configSelection:InsertOptions(Options)
-						else
-							configSelection:InsertOptions({"Empty"})
 						end
 
 						WindowFunctions:Notify({
@@ -5633,6 +5631,8 @@ function MacLib:Window(Settings)
 	end
 
 	function MacLib:DeleteConfig(Path)
+		if not Path or type(path) ~= "string" then return false, "Invalid Path" end
+
 		local fullPath = MacLib.Folder .. "/settings/" .. Path .. ".json"
 
 		local success, encoded = pcall(function() delfile(fullPath) return true end)
@@ -5640,7 +5640,7 @@ function MacLib:Window(Settings)
 			return false, "Unable to delete config"
 		end
 
-		return true, "DeletedConfig"
+		return true, "Deleted Config"
 	end
 
 	macLib.Enabled = false
