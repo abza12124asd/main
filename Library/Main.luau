@@ -2333,7 +2333,7 @@ function MacLib:Window(Settings)
 					local focused
 					local isBinding = false
 					local reset = false
-					local binded = KeybindFunctions.Settings.Default
+					KeybindFunctions.binded = KeybindFunctions.Settings.Default
 					
 					local function resetFocusState()
 						focused = false
@@ -2341,8 +2341,8 @@ function MacLib:Window(Settings)
 						binderBox:ReleaseFocus()
 					end
 
-					if binded then
-						binderBox.Text = binded.Name
+					if KeybindFunctions.binded then
+						binderBox.Text = KeybindFunctions.binded.Name
 					end
 
 					binderBox.Focused:Connect(function()
@@ -2367,27 +2367,27 @@ function MacLib:Window(Settings)
 								end
 
 								if input.UserInputType == Enum.UserInputType.Keyboard then
-									binded = input.KeyCode
+									KeybindFunctions.binded = input.KeyCode
 									binderBox.Text = input.KeyCode.Name
 								elseif input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.MouseButton2 then
-									binded = input.UserInputType
+									KeybindFunctions.binded = input.UserInputType
 									binderBox.Text = input.UserInputType.Name
 								end
 
 								if KeybindFunctions.Settings.onBinded then
-									KeybindFunctions.Settings.onBinded(binded)
+									KeybindFunctions.Settings.onBinded(KeybindFunctions.binded)
 								end
 								reset = true
 								resetFocusState()
 								Event:Disconnect()
 							end)
 						else
-							if not reset and (inp.KeyCode == binded or inp.UserInputType == binded) then
+							if not reset and (inp.KeyCode == KeybindFunctions.binded or inp.UserInputType == KeybindFunctions.binded) then
 								if KeybindFunctions.Settings.Callback then
-									KeybindFunctions.Settings.Callback(binded)
+									KeybindFunctions.Settings.Callback(KeybindFunctions.binded)
 								end
 								if KeybindFunctions.Settings.onBindHeld then
-									KeybindFunctions.Settings.onBindHeld(true, binded)
+									KeybindFunctions.Settings.onBindHeld(true, KeybindFunctions.binded)
 								end
 							else
 								reset = false
@@ -2397,31 +2397,30 @@ function MacLib:Window(Settings)
 
 					UserInputService.InputEnded:Connect(function(inp)
 						if not focused and not isBinding then
-							if inp.KeyCode == binded or inp.UserInputType == binded then
+							if inp.KeyCode == KeybindFunctions.binded or inp.UserInputType == KeybindFunctions.binded then
 								if Settings.onBindHeld then
-									Settings.onBindHeld(false, binded)
+									Settings.onBindHeld(false, KeybindFunctions.binded)
 								end
 							end
 						end
 					end)
 
 					function KeybindFunctions:Bind(Key)
-						binded = Key
-						KeybindFunctions.BindedKB = Key
+						KeybindFunctions.binded = Key
 						binderBox.Text = Key.Name
 
 						if KeybindFunctions.Settings.onBinded then
-							KeybindFunctions.Settings.onBinded(binded)
+							KeybindFunctions.Settings.onBinded(KeybindFunctions.binded)
 						end
 					end
 
 					function KeybindFunctions:Unbind()
-						binded = nil
+						KeybindFunctions.binded = nil
 						binderBox.Text = ""
 					end
 
 					function KeybindFunctions:GetBind()
-						return binded
+						return KeybindFunctions.binded
 					end
 
 					function KeybindFunctions:UpdateName(Name)
@@ -5409,11 +5408,11 @@ function MacLib:Window(Settings)
 		},
 		["Keybind"] = {
 			Save = function(Flag, data)
-				print(data.BindedKB)
+				print(data.binded)
 				return {
 					type = "Keybind", 
 					flag = Flag, 
-					bind = data.BindedKB
+					bind = data.binded
 				}
 			end,
 			Load = function(Flag, data)
@@ -5538,6 +5537,8 @@ function MacLib:Window(Settings)
 					print(k, v)
 				end)
 			end
+
+			print(option.BindedKB)
 
 			table.insert(data.objects, ClassParser[option.Class].Save(flag, option))
 		end	
