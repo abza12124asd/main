@@ -5421,6 +5421,7 @@ function MacLib:Window(Settings)
 				print(data)
 
 				if MacLib.Options[Flag] and data.Binded then
+					print(data.Binded)
 					MacLib.Options[Flag]:Bind(Enum.KeyCode[data.Binded])
 				end
 			end
