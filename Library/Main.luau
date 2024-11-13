@@ -5408,19 +5408,13 @@ function MacLib:Window(Settings)
 		},
 		["Keybind"] = {
 			Save = function(Flag, data)
-				print(data.binded)
 				return {
 					type = "Keybind", 
 					flag = Flag, 
-					bind = data.binded
+					bind = data.binded.Name
 				}
 			end,
 			Load = function(Flag, data)
-
-				print(Flag)
-				print(data)
-				print(data.bind)
-
 				if MacLib.Options[Flag] and data.bind then
 					MacLib.Options[Flag]:Bind(Enum.KeyCode[data.bind])
 				end
