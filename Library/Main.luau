@@ -4770,7 +4770,7 @@ function MacLib:Window(Settings)
 						if name == "Empty" then return end
 
 						writefile(MacLib.Folder .. "/settings/autoload.txt", name)
-						autoloadLabel:SetDesc("Autoload config: " .. name)
+						autoloadLabel:UpdateName("Autoload config: " .. name)
 						WindowFunctions:Notify({
 							Title = "Interface",
 							Description = string.format("Set %q as autoload", name),
