@@ -4784,6 +4784,14 @@ function MacLib:Window(Settings)
 					local name = readfile(MacLib.Folder .. "/settings/autoload.txt")
 					autoloadLabel:UpdateName("Autoload config: " .. name)
 				end
+
+				configSection:Button({
+					Name = "Clear autoload",
+					Callback = function()
+						autoloadLabel:UpdateName("Autoload config: ")
+						delfile(MacLib.Folder .. "/settings/autoload.txt")
+					end,
+				})
 			end
 
 			tabs[tabSwitcher] = {
