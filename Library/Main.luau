@@ -1798,8 +1798,8 @@ function MacLib:Window(Settings)
 						Toggle()
 					end
 					function ToggleFunctions:UpdateState(State)
-						togglebool = State
-						ToggleState(togglebool)
+						togglebool = not State
+						Toggle()
 					end
 					function ToggleFunctions:GetState()
 						return togglebool
