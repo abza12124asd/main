@@ -4757,7 +4757,7 @@ function MacLib:Window(Settings)
 					Callback = function()
 						local Options = MacLib:RefreshConfigList()
 
-						if Options then
+						if Options and type(Options) == "table" then
 							configSelection:InsertOptions(Options)
 						else
 							configSelection:InsertOptions({"Empty"})
