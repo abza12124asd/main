@@ -4741,7 +4741,8 @@ function MacLib:Window(Settings)
 						if #Options > 0 then
 							configSelection:InsertOptions(Options)
 						else
-							configSelection:UpdateSelection(nil)
+							print("E")
+							configSelection:UpdateSelection("Empty")
 						end
 
 						WindowFunctions:Notify({
