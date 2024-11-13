@@ -4723,6 +4723,28 @@ function MacLib:Window(Settings)
 				})
 
 				configSection:Button({
+					Name = "Delete Config",
+					Callback = function()
+						local success, returned = MacLib:DeleteConfig(configSelection.Value)
+						if not success then
+							WindowFunctions:Notify({
+								Title = "Interface",
+								Description = "Unable to delete config, return error: " .. returned
+							})
+							return
+						end
+
+						configSelection:ClearOptions()
+						configSelection:InsertOptions(MacLib:RefreshConfigList())
+						
+						WindowFunctions:Notify({
+							Title = "Interface",
+							Description = string.format("Deleted config %q", configSelection.Value),
+						})
+					end,
+				})
+
+				configSection:Button({
 					Name = "Refresh Config List",
 					Callback = function()
 						configSelection:ClearOptions()
@@ -5587,6 +5609,17 @@ function MacLib:Window(Settings)
 					end
 				end
 			end
+		end
+
+		function MacLib:DeleteConfig(Path)
+			local fullPath = MacLib.Folder .. "/settings/" .. Path .. ".json"
+	
+			local success, encoded = pcall(function() delfile(fullPath) return true end)
+			if not success then
+				return false, "Unable to delete config"
+			end
+
+			return true, "DeletedConfig"
 		end
 
 		return out
