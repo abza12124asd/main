@@ -60,6 +60,10 @@ function MacLib:Window(Settings)
 	macLib.ScreenInsets = Enum.ScreenInsets.None
 	macLib.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	macLib.Parent = (isStudio and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
+	
+	if protect_gui then
+		protect_gui(macLib)
+	end
 
 	local notifications = Instance.new("Frame")
 	notifications.Name = "Notifications"
