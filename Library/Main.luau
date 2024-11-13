@@ -5249,9 +5249,8 @@ function MacLib:Window(Settings)
 
 				if dialog.Parent then
 					dialog.Parent = dialogCanvas
+					dialogOut()
 				end
-
-				dialogOut()
 			end)
 
 			button.MouseEnter:Connect(function()
