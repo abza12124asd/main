@@ -5411,7 +5411,7 @@ function MacLib:Window(Settings)
 				return {
 					type = "Keybind", 
 					flag = Flag, 
-					bind = data.binded.Name
+					bind = (typeof(data.binded) == "EnumItem" and data.binded.Name) or nil
 				}
 			end,
 			Load = function(Flag, data)
