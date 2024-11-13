@@ -5247,7 +5247,9 @@ function MacLib:Window(Settings)
 					v.Callback()
 				end
 
-				dialog.Parent = dialogCanvas
+				if dialog.Parent then
+					dialog.Parent = dialogCanvas
+				end
 
 				dialogOut()
 			end)
