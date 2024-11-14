@@ -1299,6 +1299,10 @@ function MacLib:Window(Settings)
 					end
 				end)
 			end
+
+			if Settings.Callback then
+				Settings.Callback(toggled)
+			end
 		end
 
 		local toggled = Settings.Default
@@ -1307,12 +1311,6 @@ function MacLib:Window(Settings)
 		globalSetting.MouseButton1Click:Connect(function()
 			toggled = not toggled
 			Toggle(toggled)
-
-			task.spawn(function()
-				if Settings.Callback then
-					Settings.Callback(toggled)
-				end
-			end)
 		end)
 
 		function GlobalSettingFunctions:UpdateName(NewName)
