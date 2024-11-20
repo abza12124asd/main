@@ -151,6 +151,8 @@ function MacLib:LoadingScreen(Settings)
 		if onloadcallback then
 			onloadcallback()  
 		end
+
+		task.wait(3)
 		table.foreach(LoadingScreen, function (k, v)
 			v:Destroy()
 		end)
