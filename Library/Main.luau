@@ -136,6 +136,7 @@ function MacLib:LoadingScreen(Settings)
 	Tween(LoadingScreen["8"], Info1, {Transparency = 0.9}):Play()
 
 	local LoadingScreenFuncs = {}
+	local onloadcallback
 
 	function LoadingScreenFuncs:Unload()
 		local Info = TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0)
@@ -147,9 +148,16 @@ function MacLib:LoadingScreen(Settings)
 		Tween(LoadingScreen["8"], Info, {Transparency = 1}):Play()
 
 		task.wait(0.21)
+		if onloadcallback then
+			onloadcallback()  
+		end
 		table.foreach(LoadingScreen, function (k, v)
 			v:Destroy()
 		end)
+	end
+
+	function LoadingScreenFuncs.Loaded(func)
+		onloadcallback = func	
 	end
 
 	function LoadingScreenFuncs:SetProgress(number)
