@@ -36,7 +36,15 @@ local assets = {
 	dropdown = "rbxassetid://18865373378",
 	sliderbar = "rbxassetid://18772615246",
 	sliderhead = "rbxassetid://18772834246",
+	applelogo = "rbxassetid://96337227237775",
+	applestart = "rbxassetid://6234792983"
 }
+
+local assetList = {}
+for _, assetId in pairs(assets) do
+	table.insert(assetList, assetId)
+end
+ContentProvider:PreloadAsync(assetList)
 
 --// Functions
 local function Tween(instance, tweeninfo, propertytable)
@@ -44,6 +52,119 @@ local function Tween(instance, tweeninfo, propertytable)
 end
 
 --// Library Functions
+function MacLib:LoadingScreen(Settings)
+	local function RandomString()
+		local length = math.random(10,20)
+		local array = {}
+		for i = 1, length do
+			array[i] = string.char(math.random(32, 126))
+		end
+		return table.concat(array)
+	end
+
+	local LoadingScreen = {};
+
+	LoadingScreen["1"] = Instance.new("ScreenGui", game:GetService("CoreGui"));
+	LoadingScreen["1"]["IgnoreGuiInset"] = true;
+	LoadingScreen["1"]["ScreenInsets"] = Enum.ScreenInsets.DeviceSafeInsets;
+	LoadingScreen["1"]["Name"] = RandomString();
+	LoadingScreen["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
+
+	LoadingScreen["2"] = Instance.new("Frame", LoadingScreen["1"]);
+	LoadingScreen["2"]["BorderSizePixel"] = 0;
+	LoadingScreen["2"]["BackgroundColor3"] = Color3.fromRGB(16, 16, 16);
+	LoadingScreen["2"]["AnchorPoint"] = Vector2.new(0.5, 0.5);
+	LoadingScreen["2"]["Size"] = UDim2.new(0, 400, 0, 200);
+	LoadingScreen["2"]["Position"] = UDim2.new(0.5, 0, 0.5, 0);
+	LoadingScreen["2"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+	LoadingScreen["2"]["Name"] = RandomString();
+	LoadingScreen["2"]["BackgroundTransparency"] = 1;
+
+	LoadingScreen["3"] = Instance.new("UICorner", LoadingScreen["2"]);
+	LoadingScreen["3"]["CornerRadius"] = UDim.new(0.05, 0);
+	LoadingScreen["3"]["Name"] = RandomString();
+
+	LoadingScreen["4"] = Instance.new("CanvasGroup", LoadingScreen["2"]);
+	LoadingScreen["4"]["BorderSizePixel"] = 0;
+	LoadingScreen["4"]["BackgroundColor3"] = Color3.fromRGB(178, 178, 178);
+	LoadingScreen["4"]["Size"] = UDim2.new(0.8, 0, 0, 10);
+	LoadingScreen["4"]["Position"] = UDim2.new(0.1, 0, 0.79, 0);
+	LoadingScreen["4"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+	LoadingScreen["4"]["Name"] = RandomString();
+	LoadingScreen["4"]["BackgroundTransparency"] = 1;
+
+	LoadingScreen["5"] = Instance.new("UICorner", LoadingScreen["4"]);
+	LoadingScreen["5"]["CornerRadius"] = UDim.new(1, 0);
+	LoadingScreen["5"]["Name"] = RandomString();
+
+	LoadingScreen["6"] = Instance.new("Frame", LoadingScreen["4"]);
+	LoadingScreen["6"]["BorderSizePixel"] = 0;
+	LoadingScreen["6"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+	LoadingScreen["6"]["Size"] = UDim2.new(0, 0, 1, 0);
+	LoadingScreen["6"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+	LoadingScreen["6"]["Name"] = RandomString();
+	LoadingScreen["6"]["BackgroundTransparency"] = 1;
+
+	LoadingScreen["7"] = Instance.new("ImageLabel", LoadingScreen["2"]);
+	LoadingScreen["7"]["BorderSizePixel"] = 0;
+	LoadingScreen["7"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+	LoadingScreen["7"]["ScaleType"] = Enum.ScaleType.Crop;
+	LoadingScreen["7"]["Image"] = assets.applelogo;
+	LoadingScreen["7"]["Size"] = UDim2.new(0, 100, 0, 100);
+	LoadingScreen["7"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+	LoadingScreen["7"]["BackgroundTransparency"] = 1;
+	LoadingScreen["7"]["Name"] = RandomString();
+	LoadingScreen["7"]["Position"] = UDim2.new(0.375, 0, 0.15, 0)
+	LoadingScreen["7"].ImageTransparency = 1
+
+	LoadingScreen["8"] = Instance.new("UIStroke", LoadingScreen["2"]);
+	LoadingScreen["8"]["Transparency"] = 0.9;
+	LoadingScreen["8"]["ApplyStrokeMode"] = Enum.ApplyStrokeMode.Border;
+	LoadingScreen["8"]["Color"] = Color3.fromRGB(255, 255, 255);
+	LoadingScreen["8"]["Name"] = RandomString();
+	
+	LoadingScreen["9"] = Instance.new("Sound", LoadingScreen["2"])
+	LoadingScreen["9"].SoundId = assets.applestart
+	LoadingScreen["9"]:Play()
+	LoadingScreen["9"]["Name"] = RandomString();
+
+	local Info1 = TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0)
+	Tween(LoadingScreen["2"], Info1, {BackgroundTransparency = 0}):Play()
+	Tween(LoadingScreen["4"], Info1, {BackgroundTransparency = 0}):Play()
+	Tween(LoadingScreen["6"], Info1, {BackgroundTransparency = 0}):Play()
+	Tween(LoadingScreen["7"], Info1, {ImageTransparency = 0}):Play()
+	Tween(LoadingScreen["8"], Info1, {Transparency = 0.9}):Play()
+
+	local LoadingScreenFuncs = {}
+
+	function LoadingScreenFuncs:Unload()
+		local Info = TweenInfo.new(0.2, Enum.EasingStyle.Linear, Enum.EasingDirection.Out, 0, false, 0)
+
+		Tween(LoadingScreen["2"], Info, {BackgroundTransparency = 1}):Play()
+		Tween(LoadingScreen["4"], Info, {BackgroundTransparency = 1}):Play()
+		Tween(LoadingScreen["6"], Info, {BackgroundTransparency = 1}):Play()
+		Tween(LoadingScreen["7"], Info, {ImageTransparency = 1}):Play()
+		Tween(LoadingScreen["8"], Info, {Transparency = 1}):Play()
+
+		task.wait(0.21)
+		table.foreach(LoadingScreen, function (k, v)
+			v:Destroy()
+		end)
+	end
+
+	function LoadingScreenFuncs:SetProgress(number)
+		local Info = TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, 0, false, 0)
+		Tween(LoadingScreen["6"], Info, {Size = UDim2.fromScale(number, 1)}):Play()
+
+		if number == 1 then
+			task.wait(0.21)
+			LoadingScreenFuncs:Unload()
+		end
+	end
+
+	return LoadingScreenFuncs
+end
+
 function MacLib:Window(Settings)
 	local WindowFunctions = {Settings = Settings}
 	if Settings.AcrylicBlur ~= nil then
@@ -60,7 +181,7 @@ function MacLib:Window(Settings)
 	macLib.ScreenInsets = Enum.ScreenInsets.None
 	macLib.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 	macLib.Parent = (isStudio and LocalPlayer.PlayerGui) or game:GetService("CoreGui")
-	
+
 	if protect_gui then
 		protect_gui(macLib)
 	end
@@ -136,7 +257,7 @@ function MacLib:Window(Settings)
 	divider.Position = UDim2.fromScale(1, 0)
 	divider.Size = UDim2.new(0, 1, 1, 0)
 	divider.Parent = sidebar
-	
+
 	local dividerInteract = Instance.new("TextButton")
 	dividerInteract.Name = "DividerInteract"
 	dividerInteract.AnchorPoint = Vector2.new(0.5, 0)
@@ -637,14 +758,14 @@ function MacLib:Window(Settings)
 	content.BorderSizePixel = 0
 	content.Position = UDim2.fromScale(1, 4.69e-08)
 	content.Size = UDim2.new(0, (base.AbsoluteSize.X - sidebar.AbsoluteSize.X), 1, 0)
-	
+
 	local resizingContent = false
 	local defaultSidebarWidth = sidebar.AbsoluteSize.X
 	local initialMouseX, initialSidebarWidth
 	local snapRange = 20
 	local minSidebarWidth = 107
 	local maxSidebarWidth = base.AbsoluteSize.X - minSidebarWidth
-	
+
 	local TweenSettings = {
 		DefaultTransparency = 0.9,
 		HoverTransparency = 0.85,
@@ -1411,9 +1532,9 @@ function MacLib:Window(Settings)
 			tabSwitcherUIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			tabSwitcherUIListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
 			tabSwitcherUIListLayout.Parent = tabSwitcher
-			
+
 			local tabImage
-			
+
 			if Settings.Image then
 				tabImage = Instance.new("ImageLabel")
 				tabImage.Name = "TabImage"
@@ -1672,7 +1793,7 @@ function MacLib:Window(Settings)
 					function ButtonFunctions:SetVisibility(State)
 						button.Visible = State
 					end
-					
+
 					if Flag then
 						MacLib.Options[Flag] = ButtonFunctions
 					end
@@ -2032,7 +2153,7 @@ function MacLib:Window(Settings)
 						else
 							sliderValue.Text = ValueDisplayMethod(sliderValue)
 						end
-						
+
 						if SliderFunctions.Settings.onInputComplete then
 							SliderFunctions.Settings.onInputComplete(finalValue)
 						end
@@ -2334,7 +2455,7 @@ function MacLib:Window(Settings)
 					local isBinding = false
 					local reset = false
 					KeybindFunctions.binded = KeybindFunctions.Settings.Default
-					
+
 					local function resetFocusState()
 						focused = false
 						isBinding = false
@@ -3119,7 +3240,7 @@ function MacLib:Window(Settings)
 					prompt.BorderSizePixel = 0
 					prompt.Position = UDim2.fromScale(0.5, 0.5)
 					prompt.Size = UDim2.fromOffset(420, 0)
-					
+
 					local promptUIScale = Instance.new("UIScale")
 					promptUIScale.Name = "BaseUIScale"
 					promptUIScale.Parent = prompt
@@ -4274,7 +4395,7 @@ function MacLib:Window(Settings)
 
 						UpdateSlideFromValue(value)
 						UpdateRingFromHSV(hue, saturation)
-						
+
 						if ColorpickerFunctions.Settings.Callback then
 							task.spawn(function()
 								ColorpickerFunctions.Settings.Callback(ColorpickerFunctions.Color, isAlpha and ColorpickerFunctions.Alpha)
@@ -4627,12 +4748,12 @@ function MacLib:Window(Settings)
 
 			function TabFunctions:InsertConfigSection(Side)
 				local configSection = TabFunctions:Section({ Side = "Left" })
-				
+
 				if isStudio then
 					configSection:Label({Text = "Config system unavailable. (Environment isStudio)"})
 					return "Config system unavailable." 
 				end
-				
+
 				local inputPath = nil
 				local selectedConfig = nil
 
@@ -4758,9 +4879,9 @@ function MacLib:Window(Settings)
 						configSelection:InsertOptions(Options)
 					end,
 				})
-				
+
 				local autoloadLabel
-				
+
 				configSection:Button({
 					Name = "Set as autoload",
 					Callback = function()
@@ -4775,9 +4896,9 @@ function MacLib:Window(Settings)
 						})
 					end,
 				})
-				
+
 				autoloadLabel = configSection:Label({Text = "Autoload config: None"})
-				
+
 				if isfile(MacLib.Folder .. "/settings/autoload.txt") then
 					local name = readfile(MacLib.Folder .. "/settings/autoload.txt")
 					autoloadLabel:UpdateName("Autoload config: " .. name)
@@ -5507,7 +5628,7 @@ function MacLib:Window(Settings)
 
 	local function BuildFolderTree()
 		if isStudio then return "Config system unavailable." end
-		
+
 		local paths = {
 			MacLib.Folder,
 			MacLib.Folder .. "/settings"
@@ -5520,10 +5641,10 @@ function MacLib:Window(Settings)
 			end
 		end
 	end
-	
+
 	function MacLib:LoadAutoLoadConfig()
 		if isStudio then return "Config system unavailable." end
-		
+
 		if isfile(MacLib.Folder .. "/settings/autoload.txt") then
 			local name = readfile(MacLib.Folder .. "/settings/autoload.txt")
 
@@ -5544,14 +5665,14 @@ function MacLib:Window(Settings)
 
 	function MacLib:SetFolder(Folder)
 		if isStudio then return "Config system unavailable." end
-		
+
 		MacLib.Folder = Folder;
 		BuildFolderTree()
 	end
 
 	function MacLib:SaveConfig(Path)
 		if isStudio then return "Config system unavailable." end
-		
+
 		if (not Path) then
 			return false, "Please select a config file."
 		end
@@ -5580,7 +5701,7 @@ function MacLib:Window(Settings)
 
 	function MacLib:LoadConfig(Path)
 		if isStudio then return "Config system unavailable." end
-		
+
 		if (not Path) then
 			return false, "Please select a config file."
 		end
@@ -5604,7 +5725,7 @@ function MacLib:Window(Settings)
 
 	function MacLib:RefreshConfigList()
 		if isStudio then return "Config system unavailable." end
-		
+
 		local list = listfiles(MacLib.Folder .. "/settings")
 
 		local out = {}
@@ -5645,14 +5766,8 @@ function MacLib:Window(Settings)
 	end
 
 	macLib.Enabled = false
-
-	local assetList = {}
-	for _, assetId in pairs(assets) do
-		table.insert(assetList, assetId)
-	end
-
-	ContentProvider:PreloadAsync(assetList)
 	macLib.Enabled = true
+	
 	windowState = true
 
 	return WindowFunctions
